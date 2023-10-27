@@ -1,4 +1,4 @@
-from django.http import path
+from django.urls import path
 from .views import SourceDataView, HomeView
 
 

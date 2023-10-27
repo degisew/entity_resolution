@@ -1,6 +1,6 @@
 from django.db import models
 
-class Reference(models.Model):
+class ReferenceData(models.Model):
     MALE = 'Male'
     FEMALE = 'Female'
     GENDER_CHOICES = [
@@ -16,4 +16,6 @@ class Reference(models.Model):
     location = models.CharField(max_length=255)
     birth_date = models.DateTimeField()
     gender = models.CharField(max_length=255,choices=GENDER_CHOICES)
+
+
 

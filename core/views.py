@@ -13,12 +13,12 @@ class HomeView(View):
 
 class SourceDataView(CreateView):
     model = SourceData
-    form_class = SourceDataForm()
+    form_class = SourceDataForm
     template_name = 'core/form.html'
-    success_url = 'create-data'
+    success_url = 'home'
     # context_object_name = ''  Default name is 'form'
 
-    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+    def form_valid(self, form: BaseModelForm):
         
         # Data processing logic goes here...
 

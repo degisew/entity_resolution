@@ -14,7 +14,7 @@ class ReferenceData(models.Model):
     phone = models.CharField(max_length=200)
     address = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
-    birth_date = models.DateTimeField()
+    birth_date = models.DateField()
     gender = models.CharField(max_length=255,choices=GENDER_CHOICES)
 
 class SourceData(models.Model):
@@ -31,7 +31,7 @@ class SourceData(models.Model):
     phone = models.CharField(max_length=200)
     address = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
-    birth_date = models.DateTimeField()
+    birth_date = models.DateField()
     gender = models.CharField(max_length=255,choices=GENDER_CHOICES)
 
 

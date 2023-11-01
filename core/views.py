@@ -29,7 +29,7 @@ class SourceDataView(CreateView):
         gender = re.sub(r'[\d_\\\.@#$%^&*~]+', '',cleaned_data['gender'].strip().lower())
 
 
-    def form_valid(self, form: BaseModelForm):
-        # Data processing logic goes here...
+    def form_valid(self, form: SourceDataForm):
+        print("$$$$$$$$$$$$$$$$$", form.cleaned_data, "$$$$$$$$$$$$$$$$$")
+        self.process_data(form.cleaned_data)
         return super().form_valid(form)
-

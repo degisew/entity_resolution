@@ -17,7 +17,7 @@ class SourceDataView(CreateView):
     form_class = SourceDataForm
     template_name = 'core/form.html'
     success_url = 'home'
-    birth_date = re.sub('[a-zA-Z_.@\#\$\%\^\&\*\~]', '', '12.%@#/3fklfgk~4/_42')
+    birth_date = re.sub(r'[a-zA-Z_.@\\#$%^&*~]', '', '12.%@#/3f\klfgk~4/_42')
     print(birth_date)
     def process_data(self, cleaned_data):
         first_name = re.sub('[\W_]+', '',cleaned_data['first_name'].strip().lower())

@@ -1,6 +1,7 @@
 import re
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.views.generic import CreateView
 from django.views import View
 from .models import SourceData
@@ -52,5 +53,14 @@ class SourceDataView(CreateView):
         processed_data = self.process_data(form.cleaned_data)
         print(processed_data)
         processed_data.save()
-        return SourceDataForm()
+        form = self.form_class()
+        # Redirect to a success page or another view
+        return redirect(self.success_url)
         # return super().form_valid(form)
+
+    def form_invalid(self, form: BaseModelForm):
+        return render(self.request, self.template_name, {'form': form})
+    
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()  # Create a new instance of the form
+        return render(request, self.template_name, {'form': form})

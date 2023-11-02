@@ -1,10 +1,11 @@
+
 import re
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView
 from django.views import View
-from .models import SourceData
+from .models import ReferenceData, SourceData
 from .form import SourceDataForm
 
 
@@ -18,6 +19,12 @@ class SourceDataView(CreateView):
     form_class = SourceDataForm
     template_name = 'core/form.html'
     success_url = 'home'
+
+    # Getting reference data
+    users = ReferenceData.objects.all()
+    print('#################################')
+    print([ user.first_name for user in users])
+    print('#################################')
 
     def process_data(self, cleaned_data):
         first_name = re.sub(
@@ -48,6 +55,11 @@ class SourceDataView(CreateView):
             gender=gender,
             birth_date=birth_date,
         )
+    
+    def matching_data(self):
+        # Add a logic here
+        pass
+    
 
     def form_valid(self, form: SourceDataForm):
         processed_data = self.process_data(form.cleaned_data)

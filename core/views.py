@@ -21,6 +21,12 @@ class SourceDataView(CreateView):
     template_name = 'core/form.html'
     success_url = 'home'
 
+        # Getting reference data
+    users = ReferenceData.objects.all().values()
+    print('#################################')
+    print(users)
+    print('#################################')
+    
     def process_data(self, cleaned_data):
         first_name = re.sub(
             r'[\W\d_\\\.@#$%^&*~]+', '', cleaned_data['first_name'].strip().lower())
@@ -52,19 +58,44 @@ class SourceDataView(CreateView):
         )
     
     def matching_data(self, processed_data):
-        users = ReferenceData.objects.all()
         # Getting reference data
-        users = ReferenceData.objects.all()
+        users = ReferenceData.objects.all().values()
         print('#################################')
-        print([ user.first_name for user in users])
+        print(users)
         print('#################################')
         
+        # Process data into a DataFrame
         reference_data = pd.DataFrame(users)
-        source_data = pd.DataFrame(processed_data)
+        source_data = pd.DataFrame([processed_data])
+
+        # Indexing Records
+        indexer = rl.Index()
+        indexer.full()
+        pairs = indexer.index(reference_data, source_data)
+        # print(pairs)
+
+        # Define the comparison step
+        compare = rl.Compare()
+        compare.exact("first_name", "first_name", label="first_name")
+        compare.exact("middle_name", "middle_name", label="middle_name")
+        compare.exact("last_name", "last_name", label="last_name")
+        compare.exact("email", "email", label="email")
+        compare.exact('phone', 'phone', label='phone')
+        compare.string('address', 'address', method='jarowinkler', threshold=0.85)
+        compare.exact("birth_date", "date_of_birth", label="date_of_birth")
+        compare.string("gender", "gender", label="gender")
+        compare.string("location", "location", label="state")
+        features = compare.compute(pairs, reference_data, processed_data)
+        
+        # Classification step
+        matches = features[features.sum(axis=1) > 3]
+        print('&&&&&&&&&&&&&&&&&', len(matches), '&&&&&&&&&&&&&&&&&',)
+        return len(matches)
 
     def form_valid(self, form: SourceDataForm):
         processed_data = self.process_data(form.cleaned_data)
-        print(processed_data)
+        self.matching_data(processed_data) # Requesting for matching
+        print('ppppppppppppppppppppppppp', processed_data)
         processed_data.save()
         form = self.form_class()
         # Redirect to a success page or another view

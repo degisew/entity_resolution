@@ -1,4 +1,5 @@
-
+import recordlinkage as rl
+import pandas as pd
 import re
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
@@ -19,12 +20,6 @@ class SourceDataView(CreateView):
     form_class = SourceDataForm
     template_name = 'core/form.html'
     success_url = 'home'
-
-    # Getting reference data
-    users = ReferenceData.objects.all()
-    print('#################################')
-    print([ user.first_name for user in users])
-    print('#################################')
 
     def process_data(self, cleaned_data):
         first_name = re.sub(
@@ -56,10 +51,16 @@ class SourceDataView(CreateView):
             birth_date=birth_date,
         )
     
-    def matching_data(self):
-        # Add a logic here
-        pass
-    
+    def matching_data(self, processed_data):
+        users = ReferenceData.objects.all()
+        # Getting reference data
+        users = ReferenceData.objects.all()
+        print('#################################')
+        print([ user.first_name for user in users])
+        print('#################################')
+        
+        reference_data = pd.DataFrame(users)
+        source_data = pd.DataFrame(processed_data)
 
     def form_valid(self, form: SourceDataForm):
         processed_data = self.process_data(form.cleaned_data)

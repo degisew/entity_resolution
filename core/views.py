@@ -23,10 +23,12 @@ class SourceDataView(CreateView):
     success_url = 'home'
 
     #############################################
-    URL = 'https://account.qa.addissystems.et/Account'
-    data = requests.get(URL)
+    email = "fitsumgetu88@gmail.com"
+    pwd = "@Admin2020"
+    URL = f"https://account.qa.addissystems.et/account/sign-in/{email}/{pwd}"
+    data = requests.post(URL)
     print('#############################################')
-    print(data.json()[1])
+    print(data.json()['token'])
     print('#############################################')
     #############################################
         # Getting reference data

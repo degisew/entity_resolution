@@ -1,5 +1,6 @@
 import recordlinkage as rl
 import pandas as pd
+import requests
 import re
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
@@ -21,6 +22,13 @@ class SourceDataView(CreateView):
     template_name = 'core/form.html'
     success_url = 'home'
 
+    #############################################
+    URL = 'https://account.qa.addissystems.et/Account'
+    data = requests.get(URL)
+    print('#############################################')
+    print(data.json()[1])
+    print('#############################################')
+    #############################################
         # Getting reference data
     users = ReferenceData.objects.all().values()
     def process_data(self, cleaned_data):

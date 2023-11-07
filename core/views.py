@@ -16,14 +16,12 @@ class HomeView(View):
     def get(self, request):
         return HttpResponse('Home')
 
-
 class SourceDataView(CreateView):
     model = SourceData
     form_class = SourceDataForm
     template_name = 'core/form.html'
     success_url = 'home'
-    # Get data from External API
-    #URL = f"https://account.qa.addissystems.et/account"
+
     data = requests.get(config('URL'))
     print('#############################################') 
     print(data.json())

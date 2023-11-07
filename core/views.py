@@ -1,4 +1,5 @@
 import recordlinkage as rl
+from decouple import config
 import pandas as pd
 import requests
 import re
@@ -21,17 +22,13 @@ class SourceDataView(CreateView):
     form_class = SourceDataForm
     template_name = 'core/form.html'
     success_url = 'home'
-
-    #############################################
-    email = "fitsumgetu88@gmail.com"
-    pwd = "@Admin2020"
-    URL = f"https://account.qa.addissystems.et/account/sign-in/{email}/{pwd}"
-    data = requests.post(URL)
+    # Get data from External API
+    #URL = f"https://account.qa.addissystems.et/account"
+    data = requests.get(config('URL'))
+    print('#############################################') 
+    print(data.json())
     print('#############################################')
-    print(data.json()['token'])
-    print('#############################################')
-    #############################################
-        # Getting reference data
+    # Getting reference data
     users = ReferenceData.objects.all().values()
     def process_data(self, cleaned_data):
         first_name = re.sub(
@@ -101,12 +98,10 @@ class SourceDataView(CreateView):
     def form_valid(self, form: SourceDataForm):
         processed_data = self.process_data(form.cleaned_data)
         self.matching_data(processed_data) # Requesting for matching
-        # processed_data.save()
         form = self.form_class()
         # Redirect to a success page or another view
         return redirect(self.success_url)
-        # return super().form_valid(form)
-
+      
     def form_invalid(self, form: BaseModelForm):
         return render(self.request, self.template_name, {'form': form})
     

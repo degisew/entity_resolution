@@ -175,7 +175,7 @@ You can deploy this project using:
 
 ## 🔭 Future Features <a id="future-features"></a>
 
-- Work with data sources and increase accuracy
+- Scale data sources and work with large datasets to increase accuracy
 - Integrate with ML models for prediction
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
